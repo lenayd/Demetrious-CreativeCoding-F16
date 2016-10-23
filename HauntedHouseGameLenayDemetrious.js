@@ -35,20 +35,39 @@ var death_bool = false;
 var ellipse_start_x = 550; 
 var ellipse_start_y = 350; 
 var ellipse_offset = 100; 
+var door_creak; 
+var dog_bark; 
+var door_break; 
+var chandelier; 
+var chainsaw; 
+var midnightsyndicate; 
+var stab; 
+var music_bool = false; 
 
+function preload(){
+  door_creak = loadSound('Assets/doorcreak.mp3');
+  dog_bark = loadSound('Assets/dog.mp3');
+  door_break = loadSound('Assets/cellardoor.mp3');
+  chandelier = loadSound('Assets/chandelier.mp3');
+  chainsaw = loadSound('Assets/chainsaw.mp3');
+  midnightsyndicate = loadSound('Assets/midnightsyndicate.mp3');
+  stab = loadSound('Assets/stab.mp3');
+}
 
 function setup() {
-
+  midnightsyndicate.play(); 
 }
 
 //mouseClicked function controls a boolean that is triggered when mouse is clicked
 function mouseClicked(){
   mouse_bool = true; 
+  music_bool = true; 
 
 }
 
 //setting up the logic needed for all the screens 
 function draw() {
+  println(music_bool);
   if(main_menu_bool == true){
     main_menu(); 
   }
@@ -116,6 +135,7 @@ function left_button(){
   rect(200, 370,300,150);
 }
 
+
 //draws the right button for all the screens
 function right_button(){
   stroke(0);
@@ -156,7 +176,12 @@ function main_menu(){
 }
 
 //first screen user sees after they hit play 
-function enter_house(){   
+function enter_house(){  
+  midnightsyndicate.stop(); 
+  if(music_bool == true){
+    dog_bark.play();
+    music_bool = false; 
+  }
   createCanvas(1270, 580);
   background(255);
   textSize(30);
@@ -191,6 +216,7 @@ function enter_house(){
 }
 //parlour screen 
 function parlour(){
+  dog_bark.stop(); 
   death_bool=false;
   createCanvas(1270, 580);
   background(255);
@@ -228,6 +254,10 @@ function parlour(){
 
 //stairs function 
 function stairs(){
+  if(music_bool == true){
+    door_creak.play();
+    music_bool = false; 
+  }
   createCanvas(1270, 580);
   background(255);
   textSize(30);
@@ -248,6 +278,7 @@ function stairs(){
   if((mouseX > 200) && (mouseX < 500) && (mouseY > 370) && (mouseY < 520)){
     if(mouse_bool == true){     
       photo_death_bool = true; 
+      music_bool = true; 
       mouse_bool = false;
       stair_bool = false; 
       }
@@ -267,6 +298,10 @@ function stairs(){
 
 //death screen 
 function death(){
+  chainsaw.stop();
+  chandelier.stop();
+  door_break.stop();
+  stab.stop(); 
   createCanvas(1270, 580); 
   background(255,0,0);
   textSize(100); 
@@ -285,9 +320,10 @@ function death(){
   //if the user hits the left button, they will play again
   if((mouseX > 200) && (mouseX < 500) && (mouseY > 370) && (mouseY < 520)){
     if(mouse_bool == true){     
-      main_menu_bool = true; 
+      enter_house_bool = true; 
       mouse_bool = false; 
       death_bool = false; 
+      music_bool = true; 
       }
     }
   //if the user hits the right button, a goodbye screen will pop up
@@ -327,11 +363,15 @@ function smileyface(x,y){
 }
 //kitchen screen 
 function kitchen(){ 
+  dog_bark.stop();
   createCanvas(1270, 580);
   background(255);
   textSize(30);
   fill(0);
-  text("Kitchen state", 100,100);
+  text("You enter a kitchen. There is a foul smell, like rotting meat.", 100,100);
+  text("There is no electricity in the room, but you can see dark liquid on the floor tiles.", 100, 150); 
+  text("There seems to be a door leading to another room toward the back of the kitchen.", 100, 200); 
+  text("Near the sink you see some floating steak knives. How peculiar!", 100, 250);
   left_button(); 
   right_button();
   fill(0);
@@ -356,6 +396,10 @@ function kitchen(){
 }
 //knife_death screen 
 function knife_death(){
+  if(music_bool == true){
+    stab.play();
+    music_bool = false; 
+  }
   createCanvas(1270, 580);
   background(255);
   textSize(50);
@@ -373,11 +417,16 @@ function knife_death(){
       mouse_bool = false; 
       knife_death_bool = false; 
       death_bool = true; 
+      music_bool = true; 
     }
   }
 }
 //bathroom_death screen
 function bathroom_death(){
+  if(music_bool == true){
+    chainsaw.play();
+    music_bool = false; 
+  }
   createCanvas(1270, 580);
   background(255);
   textSize(50);
@@ -392,7 +441,6 @@ function bathroom_death(){
   //if the user hits the button, they will die
   if(mouse_bool == true){
     if((mouseX > 480) && (mouseX < 780) && (mouseY > 300) && (mouseY < 400)){
-      console.log("clicked from bathroom_death function");
       death_bool = true; 
       mouse_bool = false;  
       bathroom_death_bool = false; 
@@ -402,6 +450,11 @@ function bathroom_death(){
 
 //photo_death screen 
 function photo_death(){
+  door_creak.stop();  
+  if(music_bool == true){
+    chainsaw.play();
+    music_bool = false; 
+  } 
   createCanvas(1270, 580);
   background(255);
   textSize(50);
@@ -424,6 +477,7 @@ function photo_death(){
   }
 //bedroom screen 
 function bedroom(){ 
+  door_creak.stop();
   createCanvas(1270, 580);
   background(255);
   textSize(30);
@@ -552,6 +606,10 @@ function dining_room(){
 
 //cellar_death screen 
 function cellar_death(){
+  if(music_bool == true){
+    door_break.play();
+    music_bool = false; 
+  }
   createCanvas(1270, 580);
   background(255);
   textSize(45);
@@ -576,6 +634,7 @@ function cellar_death(){
 
 //trapped screen 
 function trapped(){
+  door_break.stop(); 
   createCanvas(1270, 580); 
   background(255,0,0);
   textSize(100); 
@@ -595,9 +654,10 @@ function trapped(){
   //if the user hits the left button, they will play again
   if(mouse_bool == true){
     if((mouseX > 200) && (mouseX < 500) && (mouseY > 370) && (mouseY < 520)){
-      main_menu_bool = true; 
+      enter_house_bool = true; 
       mouse_bool = false; 
       trapped_bool = false; 
+      music_bool = true; 
   }
     //if the user hits the right button, the goodbye screen will pop up 
       if((mouseX > 700) && (mouseX < 1000) && (mouseY > 370) && (mouseY < 520)){
@@ -610,6 +670,10 @@ function trapped(){
 
 //chandelier_death screen 
 function chandelier_death(){
+  if(music_bool == true){
+    chandelier.play();
+    music_bool = false; 
+  }
   createCanvas(1270, 580);
   background(255);
   textSize(50);
@@ -631,7 +695,7 @@ function chandelier_death(){
   }
   }
 
-
+//music not playing for main menu again
 
 
 
