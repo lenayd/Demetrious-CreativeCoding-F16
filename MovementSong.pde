@@ -1,4 +1,6 @@
 //Interactive Song Builder by Lenay Demetrious 
+//The frame differencing portion of this code is credited to Golan Levin. 
+//All sound bites are taken from the song Only by Nine Inch Nails and are owned by Interscope Records. 
 
 //Importing the Minim library to import sound later on in the code
 import ddf.minim.*;
